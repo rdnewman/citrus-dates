@@ -1,0 +1,29 @@
+grammar Dates
+
+  rule dateMDY
+    ( whitespace? month delimiter day ( delimiter year)? whitespace? ) {
+      Time.mktime(capture(:year).value, capture(:month).value, capture(:day).value)
+    }
+  end
+
+  rule month
+    ( ('1' [0-2]) | ('0'? [1-9]) )  { to_str.to_i }
+  end
+
+  rule day
+    ( ([12] [0-9]) | ('3' [0-1]) | ('0'? [1-9]) )  { to_str.to_i }
+  end
+
+  rule year
+    ( ( ('1' '9') | ('2' [01]) )? [0-9] [0-9] )  { to_str.to_i }  # 2 digits or 4 digits from 1900 through 2199
+  end
+
+  rule delimiter
+    whitespace? ('/' | '-') whitespace?
+  end
+
+  rule whitespace
+    [\s]+
+  end
+
+end
